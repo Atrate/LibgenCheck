@@ -1,4 +1,4 @@
-#!env node
+#!/usr/bin/env node
 /*
  * Copyright (C) 2020 Atrate <atrate@protonmail.com>
  *
@@ -15,6 +15,7 @@
 
 const md5_file = require("md5-file");
 const libgen = require("libgen");
+const yargs = require("yargs");
 
 const args = process.argv.slice(2);
 
