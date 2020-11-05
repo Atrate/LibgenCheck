@@ -18,39 +18,50 @@ const libgen = require("libgen");
 
 const args = process.argv.slice(2);
 
-(async (args) => 
+if (args.length === 0)
+{
+    console.log(`Fuck off`);
+    return;
+}
+
+console.log(`Files chosen for processing: ${args}`);
+
+args.forEach(async file => 
     {
-        console.log(args);
+        try
+        {
+            const hash = md5_file.sync(file);
 
-        args.forEach(async file => 
+            console.log(`${file} hash: ${hash}`);
+
+            const options = 
+                {
+                    mirror: 'http://gen.lib.rus.ec',
+                    query: hash,
+                    search_in: 'md5'
+                }
+            try 
             {
-                const hash = md5_file.sync(file);
-                console.log(`${hash}`);
+                const data = await libgen.search(options);
 
-                const options = 
-                    {
-                        mirror: 'http://gen.lib.rus.ec',
-                        query: hash,
-                        search_in: 'md5'
-                    }
-                try 
+                if (data.length === undefined)
                 {
-                    const data = await libgen.search(options);
-
-                    if (data.length === undefined)
-                    {
-                        console.log(`No results for "${options.query}"`);
-                    }
-                    else
-                    {
-                        console.log(`There are results for "${options.query}"`);
-
-                    }
+                    console.log(`${file} does not exist on Library Genesis`);
                 }
-                catch (err) 
+                else
                 {
-                    console.error(err);
+                    console.log(`${file} exists on Library Genesis`);
                 }
+            }
+            catch (err) 
+            {
+                console.error(err);
+            }
 
-            });
-    } )(args);
+        }
+        catch (err)
+        {
+            console.log(`Could not find file: ${file}`);
+            return;
+        }
+    });
