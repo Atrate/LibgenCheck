@@ -20,7 +20,7 @@ const args = process.argv.slice(2);
 
 if (args.length === 0)
 {
-    console.log(`Fuck off`);
+    console.log(`Please specify at least one file to process!`);
     return;
 }
 
