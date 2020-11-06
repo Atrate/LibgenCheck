@@ -15,19 +15,30 @@
 
 const md5_file = require("md5-file");
 const libgen = require("libgen");
-const yargs = require("yargs");
+var argv = require("yargs")(process.argv.slice(2))
+    .scriptName("libgencheck")
+    .usage("Usage: $0")
+    .count("verbose")
+    .alias("v","verbose")
+    .option("c",
+        {
+            alias: "copy",
+            describe: "PLACEHOLDER",
+            nargs: 1
+        })
+    .option("m",
+        {
+            alias: "mirror",
+            nargs: 1
+        })
+    .demandCommand(1)
+    .default("m", "http://gen.lib.rus.ec")
+    .argv;
+        
 
-const args = process.argv.slice(2);
+console.log(`Files chosen for processing: ${argv._}`);
 
-if (args.length === 0)
-{
-    console.log(`Please specify at least one file to process!`);
-    return;
-}
-
-console.log(`Files chosen for processing: ${args}`);
-
-args.forEach(async file => 
+argv._.forEach(async file => 
     {
         try
         {
