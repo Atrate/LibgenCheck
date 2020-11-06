@@ -40,7 +40,7 @@ var argv = require("yargs")(process.argv.slice(2))
         })
     .count("v")
     .alias("v", "verbose")
-    .describe("v", "Explain what is being done. Specify multiple times to increase verbosity (up to 3 times)")
+    .describe("v", "Explain what is being done. Specify multiple times to increase verbosity (up to 2 times)")
     .demandCommand(1)
     .argv;
 
