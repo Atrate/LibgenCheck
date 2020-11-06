@@ -143,7 +143,8 @@ argv._.forEach(async file =>
             }
             catch (err) 
             {
-                console.error(err);
+                WARN(`Connecting to Library Genesis failed! Please check your internet connectivity, the mirror and whether you're being rate-limited by the API. For more info, pass -vv`);
+                DEBUG(err);
             }
 
         }
