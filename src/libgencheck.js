@@ -27,22 +27,16 @@ var argv = require("yargs")(process.argv.slice(2))
             describe: "Copy files not available on Library Genesis to a specified folder",
             nargs: 1
         })
-    .option("m",
-        {
-            alias: "move",
-            describe: "Move files not available on Library Genesis to a specified folder",
-            nargs: 1
-        })
     .option("l",
         {
             alias: "libgen-mirror",
             describe: "Choose a Library Genesis mirror",
             nargs: 1
         })
-    .option("w",
+    .option("m",
         {
-            alias: "wait",
-            describe: "Wait n seconds between each API call to reduce API load",
+            alias: "move",
+            describe: "Move files not available on Library Genesis to a specified folder",
             nargs: 1
         })
     .demandCommand(1)
@@ -110,11 +104,6 @@ argv._.forEach(async file =>
                     console.log(`${file} exists on Library Genesis`);
                     DEBUG(data);
                 }
-
-                // if (typeof argv.w !== 'undefined'))
-                // {
-                //     await sleep(1000 * argv.w);
-                // }
             }
             catch (err) 
             {
