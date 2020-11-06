@@ -19,8 +19,6 @@ const fs = require("fs");
 var argv = require("yargs")(process.argv.slice(2))
     .scriptName("libgencheck")
     .usage("Usage: $0 [OPTION]...  [FILE]...")
-    .count("verbose")
-    .alias("v","verbose")
     .option("c",
         {
             alias: "copy",
@@ -33,20 +31,23 @@ var argv = require("yargs")(process.argv.slice(2))
             describe: "Choose a Library Genesis mirror",
             nargs: 1
         })
+    .default("l", "http://gen.lib.rus.ec")
     .option("m",
         {
             alias: "move",
             describe: "Move files not available on Library Genesis to a specified folder",
             nargs: 1
         })
+    .count("v")
+    .alias("v", "verbose")
+    .describe("v", "Explain what is being done. Specify multiple times to increase verbosity (up to 3 times)")
     .demandCommand(1)
-    .default("l", "http://gen.lib.rus.ec")
     .argv;
 
 
 console.log(argv.w)
 
-const VERBOSE_LEVEL = argv.verbose;
+const VERBOSE_LEVEL = argv.v;
 
 function WARN()  { VERBOSE_LEVEL >= 0 && console.log.apply(console, arguments); }
 function INFO()  { VERBOSE_LEVEL >= 1 && console.log.apply(console, arguments); }
@@ -117,11 +118,3 @@ argv._.forEach(async file =>
             return;
         }
     });
-
-function sleep(ms) 
-{
-    return new Promise((resolve) => 
-        {
-            setTimeout(resolve, ms);
-        });
-}
