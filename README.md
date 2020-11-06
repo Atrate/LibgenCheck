@@ -10,14 +10,18 @@ Usage: libgencheck.js [OPTION]...  [FILE]...
 Options:
       --help           Show help                                       [boolean]
       --version        Show version number                             [boolean]
-  -c, --copy           Copy files not available on Library Genesis to a
+  -c, --copy           Copy files available on Library Genesis to a specified
+                       folder
+  -C, --copy-reverse   Copy files NOT available on Library Genesis to a
                        specified folder
   -l, --libgen-mirror  Choose a Library Genesis mirror
                                               [default: "http://gen.lib.rus.ec"]
-  -m, --move           Move files not available on Library Genesis to a
+  -m, --move           Move files available on Library Genesis to a specified
+                       folder
+  -M, --move-reverse   Move files NOT available on Library Genesis to a
                        specified folder
   -v, --verbose        Explain what is being done. Specify multiple times to
-                       increase verbosity (up to 3 times)                [count]
+                       increase verbosity (up to 2 times)                [count]
 ```
 
 

@@ -22,7 +22,13 @@ var argv = require("yargs")(process.argv.slice(2))
     .option("c",
         {
             alias: "copy",
-            describe: "Copy files not available on Library Genesis to a specified folder",
+            describe: "Copy files available on Library Genesis to a specified folder",
+            nargs: 1
+        })
+    .option("C",
+        {
+            alias: "copy-reverse",
+            describe: "Copy files NOT available on Library Genesis to a specified folder",
             nargs: 1
         })
     .option("l",
@@ -35,7 +41,13 @@ var argv = require("yargs")(process.argv.slice(2))
     .option("m",
         {
             alias: "move",
-            describe: "Move files not available on Library Genesis to a specified folder",
+            describe: "Move files available on Library Genesis to a specified folder",
+            nargs: 1
+        })
+    .option("M",
+        {
+            alias: "move-reverse",
+            describe: "Move files NOT available on Library Genesis to a specified folder",
             nargs: 1
         })
     .count("v")
@@ -74,6 +86,35 @@ argv._.forEach(async file =>
                 if (data.length === undefined)
                 {
                     console.log(`${file} does not exist on Library Genesis`);
+                    if (typeof argv.C !== 'undefined')
+                    {
+                        if (!fs.existsSync(argv.C))
+                        {
+                            fs.mkdirSync(argv.C);
+                        }
+                        fs.copyFile(file, argv.C + "/"  + file, (err) =>
+                            {
+                                if (err) throw err;
+                                INFO(`Copied ${file} to ${argv.C}`)
+                            });
+                    }
+                    if (typeof argv.M !== 'undefined')
+                    {
+                        if (!fs.existsSync(argv.M))
+                        {
+                            fs.mkdirSync(argv.M);
+                        }
+                        fs.rename(file, argv.M + "/"  + file, (err) =>
+                            {
+                                if (err) throw err;
+                                INFO(`Moved ${file} to ${argv.M}`)
+                            });
+                    }                    
+                }
+                else
+                {                  
+                    console.log(`${file} exists on Library Genesis`);
+                    DEBUG(data);
                     if (typeof argv.c !== 'undefined')
                     {
                         if (!fs.existsSync(argv.c))
@@ -83,6 +124,7 @@ argv._.forEach(async file =>
                         fs.copyFile(file, argv.c + "/"  + file, (err) =>
                             {
                                 if (err) throw err;
+                                INFO(`Copied ${file} to ${argv.c}`)
                             });
                     }
                     if (typeof argv.m !== 'undefined')
@@ -94,13 +136,9 @@ argv._.forEach(async file =>
                         fs.rename(file, argv.m + "/"  + file, (err) =>
                             {
                                 if (err) throw err;
+                                INFO(`Moved ${file} to ${argv.m}`)
                             });
                     }
-                }
-                else
-                {
-                    console.log(`${file} exists on Library Genesis`);
-                    DEBUG(data);
                 }
             }
             catch (err) 
