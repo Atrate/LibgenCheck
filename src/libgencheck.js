@@ -15,27 +15,36 @@
 
 const md5_file = require("md5-file");
 const libgen = require("libgen");
+const fs = require("fs");
 var argv = require("yargs")(process.argv.slice(2))
-    .scriptName("libgencheck")
-    .usage("Usage: $0")
-    .count("verbose")
-    .alias("v","verbose")
+    .scriptName("libgencheck.js")
+    .usage("Usage: $0 [OPTION]...  [FILE]...")
     .option("c",
         {
             alias: "copy",
-            describe: "PLACEHOLDER",
+            describe: "Copy files not available on Library Genesis to a specified folder",
             nargs: 1
         })
+    .option("l",
+        {
+            alias: "libgen-mirror",
+            describe: "Choose a Library Genesis mirror",
+            nargs: 1
+        })
+    .default("l", "http://gen.lib.rus.ec")
     .option("m",
         {
-            alias: "mirror",
+            alias: "move",
+            describe: "Move files not available on Library Genesis to a specified folder",
             nargs: 1
         })
+    .count("v")
+    .alias("v", "verbose")
+    .describe("v", "Explain what is being done. Specify multiple times to increase verbosity (up to 3 times)")
     .demandCommand(1)
-    .default("m", "http://gen.lib.rus.ec")
     .argv;
-        
-VERBOSE_LEVEL = argv.verbose;
+
+const VERBOSE_LEVEL = argv.v;
 
 function WARN()  { VERBOSE_LEVEL >= 0 && console.log.apply(console, arguments); }
 function INFO()  { VERBOSE_LEVEL >= 1 && console.log.apply(console, arguments); }
@@ -53,10 +62,11 @@ argv._.forEach(async file =>
 
             const options = 
                 {
-                    mirror: 'http://gen.lib.rus.ec',
+                    mirror: argv.l,
                     query: hash,
                     search_in: 'md5'
                 }
+            DEBUG(options)
             try 
             {
                 const data = await libgen.search(options);
@@ -64,10 +74,33 @@ argv._.forEach(async file =>
                 if (data.length === undefined)
                 {
                     console.log(`${file} does not exist on Library Genesis`);
+                    if (typeof argv.c !== 'undefined')
+                    {
+                        if (!fs.existsSync(argv.c))
+                        {
+                            fs.mkdirSync(argv.c);
+                        }
+                        fs.copyFile(file, argv.c + "/"  + file, (err) =>
+                            {
+                                if (err) throw err;
+                            });
+                    }
+                    if (typeof argv.m !== 'undefined')
+                    {
+                        if (!fs.existsSync(argv.m))
+                        {
+                            fs.mkdirSync(argv.m);
+                        }
+                        fs.rename(file, argv.m + "/"  + file, (err) =>
+                            {
+                                if (err) throw err;
+                            });
+                    }
                 }
                 else
                 {
                     console.log(`${file} exists on Library Genesis`);
+                    DEBUG(data);
                 }
             }
             catch (err) 
