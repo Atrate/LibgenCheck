@@ -31,6 +31,8 @@ To check all the files in a folder you can utilize shell globbing:
 To check all the files with the PDF extension you can use this:
 `libgencheck *.pdf`
 
+### [Changelog](./CHANGELOG)
+
 ## Contributing
 
 For guidelines on how to contribute please refer to [CONTRIBUTING.md](./CONTRIBUTING.md). Please keep in mind that all pull/merge requests should be submitted to the [GitLab repo](https://gitlab.com/Atrate/libgencheck), since repos on e.g. GitHub are just mirrors.
