@@ -20,6 +20,18 @@ const colors = require("colors");
 var argv = require("yargs")(process.argv.slice(2))
     .scriptName("libgencheck.js")
     .usage("Usage: $0 [OPTION]...  [FILE]...")
+    .option("a",
+        {
+            alias: "available-only",
+            describe: "Only output files files available on Library Genesis",
+            nargs: 0
+        })
+    .option("A",
+        {
+            alias: "unavailable-only",
+            describe: "Only output files NOT available on Library Genesis",
+            nargs: 0
+        })
     .option("c",
         {
             alias: "copy",
@@ -87,7 +99,10 @@ argv._.forEach(async file =>
 
                 if (data.length === undefined)
                 {
-                    console.log(`[` + `✘`.red + `] ` + `${file}`.italic  + ` does not exist`.bold + ` on Library Genesis`);
+                    if (!argv.a)
+                    {
+                        console.log(`[` + `✘`.red + `] ` + `${file}`.italic  + ` does not exist`.bold + ` on Library Genesis`);
+                    }
                     if (typeof argv.C !== 'undefined')
                     {
                         if (!fs.existsSync(argv.C))
@@ -114,8 +129,11 @@ argv._.forEach(async file =>
                     }                    
                 }
                 else
-                {                  
-                    console.log(`[` + `✔`.green + `] ` +  `${file}`.italic + ` exists`.bold + ` on Library Genesis`);
+                {    
+                    if (!argv.A)
+                    {
+                        console.log(`[` + `✔`.green + `] ` +  `${file}`.italic + ` exists`.bold + ` on Library Genesis`);
+                    }
                     DEBUG(data);
                     if (typeof argv.c !== 'undefined')
                     {

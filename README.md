@@ -8,20 +8,22 @@ A simple Node.js script designed to check whether books in your collection exist
 Usage: libgencheck.js [OPTION]...  [FILE]...
 
 Options:
-      --help           Show help                                       [boolean]
-      --version        Show version number                             [boolean]
-  -c, --copy           Copy files available on Library Genesis to a specified
-                       folder
-  -C, --copy-reverse   Copy files NOT available on Library Genesis to a
-                       specified folder
-  -l, --libgen-mirror  Choose a Library Genesis mirror
+      --help              Show help                                    [boolean]
+      --version           Show version number                          [boolean]
+  -a, --available-only    Only output files files available on Library Genesis
+  -A, --unavailable-only  Only output files NOT available on Library Genesis
+  -c, --copy              Copy files available on Library Genesis to a specified
+                          folder
+  -C, --copy-reverse      Copy files NOT available on Library Genesis to a
+                          specified folder
+  -l, --libgen-mirror     Choose a Library Genesis mirror
                                               [default: "http://gen.lib.rus.ec"]
-  -m, --move           Move files available on Library Genesis to a specified
-                       folder
-  -M, --move-reverse   Move files NOT available on Library Genesis to a
-                       specified folder
-  -v, --verbose        Explain what is being done. Specify multiple times to
-                       increase verbosity (up to 2 times)                [count]
+  -m, --move              Move files available on Library Genesis to a specified
+                          folder
+  -M, --move-reverse      Move files NOT available on Library Genesis to a
+                          specified folder
+  -v, --verbose           Explain what is being done. Specify multiple times to
+                          increase verbosity (up to 2 times)             [count]
 ```
 
 
