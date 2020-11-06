@@ -44,9 +44,6 @@ var argv = require("yargs")(process.argv.slice(2))
     .demandCommand(1)
     .argv;
 
-
-console.log(argv.w)
-
 const VERBOSE_LEVEL = argv.v;
 
 function WARN()  { VERBOSE_LEVEL >= 0 && console.log.apply(console, arguments); }
