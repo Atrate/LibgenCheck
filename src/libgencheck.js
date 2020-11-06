@@ -35,8 +35,13 @@ var argv = require("yargs")(process.argv.slice(2))
     .default("m", "http://gen.lib.rus.ec")
     .argv;
         
+VERBOSE_LEVEL = argv.verbose;
 
-console.log(`Files chosen for processing: ${argv._}`);
+function WARN()  { VERBOSE_LEVEL >= 0 && console.log.apply(console, arguments); }
+function INFO()  { VERBOSE_LEVEL >= 1 && console.log.apply(console, arguments); }
+function DEBUG() { VERBOSE_LEVEL >= 2 && console.log.apply(console, arguments); }
+
+INFO(`Files chosen for processing: ${argv._}`);
 
 argv._.forEach(async file => 
     {
@@ -44,7 +49,7 @@ argv._.forEach(async file =>
         {
             const hash = md5_file.sync(file);
 
-            console.log(`${file} hash: ${hash}`);
+            INFO(`${file} hash: ${hash}`);
 
             const options = 
                 {
@@ -73,7 +78,7 @@ argv._.forEach(async file =>
         }
         catch (err)
         {
-            console.log(`Could not find file: ${file}`);
+            WARN(`Could not find file: ${file}`);
             return;
         }
     });
