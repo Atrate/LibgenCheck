@@ -17,25 +17,35 @@ const md5_file = require("md5-file");
 const libgen = require("libgen");
 var argv = require("yargs")(process.argv.slice(2))
     .scriptName("libgencheck")
-    .usage("Usage: $0")
+    .usage("Usage: $0 [OPTION]...  [FILE]...")
     .count("verbose")
     .alias("v","verbose")
     .option("c",
         {
             alias: "copy",
-            describe: "PLACEHOLDER",
+            describe: "Copy files not available on Library Genesis to a specified folder",
             nargs: 1
         })
-    .option("m",
+    .option("l",
         {
-            alias: "mirror",
+            alias: "libgen-mirror",
+            describe: "Choose a Library Genesis mirror",
+            nargs: 1
+        })
+    .option("w",
+        {
+            alias: "wait",
+            describe: "Wait n seconds between each API call to reduce API load",
             nargs: 1
         })
     .demandCommand(1)
-    .default("m", "http://gen.lib.rus.ec")
+    .default("l", "http://gen.lib.rus.ec")
     .argv;
-        
-VERBOSE_LEVEL = argv.verbose;
+
+
+console.log(argv.w)
+
+const VERBOSE_LEVEL = argv.verbose;
 
 function WARN()  { VERBOSE_LEVEL >= 0 && console.log.apply(console, arguments); }
 function INFO()  { VERBOSE_LEVEL >= 1 && console.log.apply(console, arguments); }
@@ -53,10 +63,11 @@ argv._.forEach(async file =>
 
             const options = 
                 {
-                    mirror: 'http://gen.lib.rus.ec',
+                    mirror: argv.l,
                     query: hash,
                     search_in: 'md5'
                 }
+            DEBUG(options)
             try 
             {
                 const data = await libgen.search(options);
@@ -68,7 +79,13 @@ argv._.forEach(async file =>
                 else
                 {
                     console.log(`${file} exists on Library Genesis`);
+                    DEBUG(data);
                 }
+
+               // if (!(argv.w === undefined))
+               // {
+               //     await sleep(1000 * argv.w);
+               // }
             }
             catch (err) 
             {
@@ -82,3 +99,11 @@ argv._.forEach(async file =>
             return;
         }
     });
+
+function sleep(ms) 
+{
+    return new Promise((resolve) => 
+        {
+        setTimeout(resolve, ms);
+    });
+}
