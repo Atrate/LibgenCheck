@@ -15,6 +15,7 @@
 
 const md5_file = require("md5-file");
 const libgen = require("libgen");
+const fs = require("fs");
 var argv = require("yargs")(process.argv.slice(2))
     .scriptName("libgencheck")
     .usage("Usage: $0 [OPTION]...  [FILE]...")
@@ -24,6 +25,12 @@ var argv = require("yargs")(process.argv.slice(2))
         {
             alias: "copy",
             describe: "Copy files not available on Library Genesis to a specified folder",
+            nargs: 1
+        })
+    .option("m",
+        {
+            alias: "move",
+            describe: "Move files not available on Library Genesis to a specified folder",
             nargs: 1
         })
     .option("l",
@@ -75,6 +82,28 @@ argv._.forEach(async file =>
                 if (data.length === undefined)
                 {
                     console.log(`${file} does not exist on Library Genesis`);
+                    if (typeof argv.c !== 'undefined')
+                    {
+                        if (!fs.existsSync(argv.c))
+                        {
+                            fs.mkdirSync(argv.c);
+                        }
+                        fs.copyFile(file, argv.c + "/"  + file, (err) =>
+                            {
+                                if (err) throw err;
+                            });
+                    }
+                    if (typeof argv.m !== 'undefined')
+                    {
+                        if (!fs.existsSync(argv.m))
+                        {
+                            fs.mkdirSync(argv.m);
+                        }
+                        fs.rename(file, argv.m + "/"  + file, (err) =>
+                            {
+                                if (err) throw err;
+                            });
+                    }
                 }
                 else
                 {
@@ -82,10 +111,10 @@ argv._.forEach(async file =>
                     DEBUG(data);
                 }
 
-               // if (!(argv.w === undefined))
-               // {
-               //     await sleep(1000 * argv.w);
-               // }
+                // if (typeof argv.w !== 'undefined'))
+                // {
+                //     await sleep(1000 * argv.w);
+                // }
             }
             catch (err) 
             {
@@ -104,6 +133,6 @@ function sleep(ms)
 {
     return new Promise((resolve) => 
         {
-        setTimeout(resolve, ms);
-    });
+            setTimeout(resolve, ms);
+        });
 }
