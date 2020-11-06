@@ -4,7 +4,22 @@
 A simple Node.js script designed to check whether books in your collection exist on Library Genesis or not.
 
 ## Usage
-`libgencheck FILE1 FILE2 …`
+```
+Usage: libgencheck.js [OPTION]...  [FILE]...
+
+Options:
+      --help           Show help                                       [boolean]
+      --version        Show version number                             [boolean]
+  -c, --copy           Copy files not available on Library Genesis to a
+                       specified folder
+  -l, --libgen-mirror  Choose a Library Genesis mirror
+                                              [default: "http://gen.lib.rus.ec"]
+  -m, --move           Move files not available on Library Genesis to a
+                       specified folder
+  -v, --verbose        Explain what is being done. Specify multiple times to
+                       increase verbosity (up to 3 times)                [count]
+```
+
 
 To check all the files in a folder you can utilize shell globbing:
 `libgencheck *`
