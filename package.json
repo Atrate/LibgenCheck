@@ -17,6 +17,7 @@
   "dependencies": {
     "libgen": "2.1.x",
     "md5-file": "5.0.x",
-    "yargs": "16.1.x"
+    "yargs": "16.1.x",
+    "colors": "1.4.x"
   }
 }

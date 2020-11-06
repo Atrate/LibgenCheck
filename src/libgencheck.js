@@ -16,6 +16,7 @@
 const md5_file = require("md5-file");
 const libgen = require("libgen");
 const fs = require("fs");
+const colors = require("colors");
 var argv = require("yargs")(process.argv.slice(2))
     .scriptName("libgencheck.js")
     .usage("Usage: $0 [OPTION]...  [FILE]...")
@@ -62,7 +63,8 @@ function WARN()  { VERBOSE_LEVEL >= 0 && console.log.apply(console, arguments); 
 function INFO()  { VERBOSE_LEVEL >= 1 && console.log.apply(console, arguments); }
 function DEBUG() { VERBOSE_LEVEL >= 2 && console.log.apply(console, arguments); }
 
-INFO(`Files chosen for processing: ${argv._}`);
+INFO(`Files chosen for processing: `.bold + `${argv._}`.italic);
+INFO("");
 
 argv._.forEach(async file => 
     {
@@ -70,7 +72,7 @@ argv._.forEach(async file =>
         {
             const hash = md5_file.sync(file);
 
-            INFO(`${file} hash: ${hash}`);
+            INFO(`${file}`.italic + ` hash: ` + `${hash}`.gray);
 
             const options = 
                 {
@@ -85,7 +87,7 @@ argv._.forEach(async file =>
 
                 if (data.length === undefined)
                 {
-                    console.log(`${file} does not exist on Library Genesis`);
+                    console.log(`[` + `✘`.red + `] ` + `${file}`.italic  + ` does not exist`.bold + ` on Library Genesis`);
                     if (typeof argv.C !== 'undefined')
                     {
                         if (!fs.existsSync(argv.C))
@@ -113,7 +115,7 @@ argv._.forEach(async file =>
                 }
                 else
                 {                  
-                    console.log(`${file} exists on Library Genesis`);
+                    console.log(`[` + `✔`.green + `] ` +  `${file}`.italic + ` exists`.bold + ` on Library Genesis`);
                     DEBUG(data);
                     if (typeof argv.c !== 'undefined')
                     {

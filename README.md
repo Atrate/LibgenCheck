@@ -38,6 +38,8 @@ To check all the files with the PDF extension you can use this:
 For guidelines on how to contribute please refer to [CONTRIBUTING.md](./CONTRIBUTING.md). Please keep in mind that all pull/merge requests should be submitted to the [GitLab repo](https://gitlab.com/Atrate/libgencheck), since repos on e.g. GitHub are just mirrors.
 
 ## Dependencies and third-party components
+ - [colors](https://www.npmjs.com/package/colors) (MIT):
+ `npm install colors`
  - [libgen](https://www.npmjs.com/package/libgen) (MIT):
  `npm install libgen`
  - [md5-file](https://www.npmjs.com/package/md5-file) (MIT):
