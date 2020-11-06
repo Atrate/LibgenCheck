@@ -17,7 +17,7 @@ const md5_file = require("md5-file");
 const libgen = require("libgen");
 const fs = require("fs");
 var argv = require("yargs")(process.argv.slice(2))
-    .scriptName("libgencheck")
+    .scriptName("libgencheck.js")
     .usage("Usage: $0 [OPTION]...  [FILE]...")
     .option("c",
         {
