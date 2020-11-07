@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /*
  * Copyright (C) 2020 Atrate <atrate@protonmail.com>
  *
@@ -15,8 +14,9 @@
 
 const md5_file = require("md5-file");
 const libgen = require("libgen");
-const fs = require("fs");
 const colors = require("colors");
+const path = require("path");
+const fs = require("fs");
 var argv = require("yargs")(process.argv.slice(2))
     .scriptName("libgencheck.js")
     .usage("Usage: $0 [OPTION]...  [FILE]...")
@@ -87,101 +87,99 @@ INFO("");
 
 argv._.forEach(async file => 
     {
+        let hash;
         try
         {
-            const hash = md5_file.sync(file);
-
-            INFO(argv.n ? `${file} hash : ${hash}` : `${file}`.italic + ` hash: ` + `${hash}`.gray );
-
-            const options = 
-                {
-                    mirror: argv.l,
-                    query: hash,
-                    search_in: 'md5'
-                }
-            DEBUG(options)
-            try 
-            {
-                const data = await libgen.search(options);
-
-                if (data.length === undefined)
-                {
-                    if (!argv.a)
-                    {
-                        LOG(argv.n ? `[X] ${file} does not exist on Library Genesis` : `[` + `✘`.red + `] ` + `${file}`.italic  + ` does not exist`.bold + ` on Library Genesis`);
-                    }
-                    if (typeof argv.C !== 'undefined')
-                    {
-                        if (!fs.existsSync(argv.C))
-                        {
-                            fs.mkdirSync(argv.C);
-                        }
-                        fs.copyFile(file, argv.C + "/"  + file, (err) =>
-                            {
-                                if (err) throw err;
-                                INFO(`Copied ${file} to ${argv.C}`)
-                            });
-                    }
-                    if (typeof argv.M !== 'undefined')
-                    {
-                        if (!fs.existsSync(argv.M))
-                        {
-                            fs.mkdirSync(argv.M);
-                        }
-                        fs.rename(file, argv.M + "/"  + file, (err) =>
-                            {
-                                if (err) throw err;
-                                INFO(`Moved ${file} to ${argv.M}`)
-                            });
-                    }                    
-                }
-                else
-                {    
-                    if (!argv.A)
-                    {
-
-
-                        LOG(argv.n ? `[O] ${file} exists on Library Genesis`: `[` + `✔`.green + `] ` +  `${file}`.italic + ` exists`.bold + ` on Library Genesis`);
-
-
-                    }
-                    DEBUG(data);
-                    if (typeof argv.c !== 'undefined')
-                    {
-                        if (!fs.existsSync(argv.c))
-                        {
-                            fs.mkdirSync(argv.c);
-                        }
-                        fs.copyFile(file, argv.c + "/"  + file, (err) =>
-                            {
-                                if (err) throw err;
-                                INFO(`Copied ${file} to ${argv.c}`)
-                            });
-                    }
-                    if (typeof argv.m !== 'undefined')
-                    {
-                        if (!fs.existsSync(argv.m))
-                        {
-                            fs.mkdirSync(argv.m);
-                        }
-                        fs.rename(file, argv.m + "/"  + file, (err) =>
-                            {
-                                if (err) throw err;
-                                INFO(`Moved ${file} to ${argv.m}`)
-                            });
-                    }
-                }
-            }
-            catch (err) 
-            {
-                WARN(`Connecting to Library Genesis failed! Please check your internet connectivity, the mirror and whether you're being rate-limited by the API. For more info, pass -vv`);
-                DEBUG(err);
-            }
-
+            hash = md5_file.sync(file);
         }
         catch (err)
         {
             WARN(`Could not find file: ${file}`);
+            DEBUG(err);
             return;
+        }
+        INFO(argv.n ? `${file} hash : ${hash}` : `${file}`.italic + ` hash: ` + `${hash}`.gray );
+
+        const options = 
+            {
+                mirror: argv.l,
+                query: hash,
+                search_in: 'md5'
+            }
+        DEBUG(options);
+
+        let data;
+        try 
+        {
+            data = await libgen.search(options);
+        }
+        catch (err) 
+        {
+            WARN(`Connecting to Library Genesis failed! Please check your internet connectivity, the mirror and whether you're being rate-limited by the API. For more info, pass -vv`);
+            DEBUG(err);
+        }
+
+        if (data.length === undefined)
+        {
+            if (!argv.a)
+            {
+                LOG(argv.n ? `[X] ${file} does not exist on Library Genesis` : `[` + `✘`.red + `] ` + `${file}`.italic  + ` does not exist`.bold + ` on Library Genesis`);
+            }
+            if (typeof argv.C !== 'undefined')
+            {
+                if (!fs.existsSync(argv.C))
+                {
+                    fs.mkdirSync(argv.C);
+                }
+                fs.copyFile(file, path.join(argv.C, path.basename(file)), (err) =>
+                    {
+                        if (err) throw err;
+                        INFO(`Copied ${file} to ${argv.C}`)
+                    });
+            }
+            if (typeof argv.M !== 'undefined')
+            {
+                if (!fs.existsSync(argv.M))
+                {
+                    fs.mkdirSync(argv.M);
+                }
+                fs.rename(file, path.join(argv.M, path.basename(file)), (err) =>
+                    {
+                        if (err) throw err;
+                        INFO(`Moved ${file} to ${argv.M}`)
+                    });
+            }                    
+        }
+        else
+        {    
+            if (!argv.A)
+            {
+                LOG(argv.n ? `[O] ${file} exists on Library Genesis`: `[` + `✔`.green + `] ` +  `${file}`.italic + ` exists`.bold + ` on Library Genesis`);
+            }
+            DEBUG(data);
+            if (typeof argv.c !== 'undefined')
+            {
+                if (!fs.existsSync(argv.c))
+                {
+                    fs.mkdirSync(argv.c);
+                }
+                fs.copyFile(file, path.join(argv.c, path.basename(file)), (err) =>
+                    {
+                        if (err) throw err;
+                        INFO(`Copied ${file} to ${argv.c}`)
+                    });
+            }
+            if (typeof argv.m !== 'undefined')
+            {
+                if (!fs.existsSync(argv.m))
+                {
+                    fs.mkdirSync(argv.m);
+                }
+                fs.rename(file, path.join(argv.m, path.basename(file)), (err) =>
+                    {
+                        if (err) throw err;
+                        INFO(`Moved ${file} to ${argv.m}`)
+                    });
+            }
         }
     });
