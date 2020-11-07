@@ -63,6 +63,12 @@ var argv = require("yargs")(process.argv.slice(2))
             describe: "Move files NOT available on Library Genesis to a specified folder",
             nargs: 1
         })
+    .option("n",
+        {
+            alias: "no-formatting",
+            describe: "Disable output formatting (colours and font styles). Also changes checkmarks into 'O's and crosses into 'X'es",
+            nargs: 0
+        })
     .count("v")
     .alias("v", "verbose")
     .describe("v", "Explain what is being done. Specify multiple times to increase verbosity (up to 2 times)")
@@ -71,11 +77,12 @@ var argv = require("yargs")(process.argv.slice(2))
 
 const VERBOSE_LEVEL = argv.v;
 
+function LOG() { VERBOSE_LEVEL >= 0 && console.log.apply(console, arguments); }
 function WARN()  { VERBOSE_LEVEL >= 0 && console.log.apply(console, arguments); }
 function INFO()  { VERBOSE_LEVEL >= 1 && console.log.apply(console, arguments); }
 function DEBUG() { VERBOSE_LEVEL >= 2 && console.log.apply(console, arguments); }
 
-INFO(`Files chosen for processing: `.bold + `${argv._}`.italic);
+INFO(argv.n ? `Files chosen for processing: ${argv._}`: `Files chosen for processing: `.bold + `${argv._}`.italic );
 INFO("");
 
 argv._.forEach(async file => 
@@ -84,7 +91,7 @@ argv._.forEach(async file =>
         {
             const hash = md5_file.sync(file);
 
-            INFO(`${file}`.italic + ` hash: ` + `${hash}`.gray);
+            INFO(argv.n ? `${file} hash : ${hash}` : `${file}`.italic + ` hash: ` + `${hash}`.gray );
 
             const options = 
                 {
@@ -101,7 +108,7 @@ argv._.forEach(async file =>
                 {
                     if (!argv.a)
                     {
-                        console.log(`[` + `✘`.red + `] ` + `${file}`.italic  + ` does not exist`.bold + ` on Library Genesis`);
+                        LOG(argv.n ? `[X] ${file} does not exist on Library Genesis` : `[` + `✘`.red + `] ` + `${file}`.italic  + ` does not exist`.bold + ` on Library Genesis`);
                     }
                     if (typeof argv.C !== 'undefined')
                     {
@@ -132,7 +139,11 @@ argv._.forEach(async file =>
                 {    
                     if (!argv.A)
                     {
-                        console.log(`[` + `✔`.green + `] ` +  `${file}`.italic + ` exists`.bold + ` on Library Genesis`);
+
+
+                        LOG(argv.n ? `[O] ${file} exists on Library Genesis`: `[` + `✔`.green + `] ` +  `${file}`.italic + ` exists`.bold + ` on Library Genesis`);
+
+
                     }
                     DEBUG(data);
                     if (typeof argv.c !== 'undefined')

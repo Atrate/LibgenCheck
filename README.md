@@ -22,6 +22,9 @@ Options:
                           folder
   -M, --move-reverse      Move files NOT available on Library Genesis to a
                           specified folder
+  -n, --no-formatting     Disable output formatting (colours and font styles).
+                          Also changes checkmarks into 'O's and crosses into
+                          'X'es
   -v, --verbose           Explain what is being done. Specify multiple times to
                           increase verbosity (up to 2 times)             [count]
 ```
