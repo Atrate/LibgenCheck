@@ -17,6 +17,9 @@ const libgen = require("libgen");
 const colors = require("colors");
 const path = require("path");
 const fs = require("fs");
+
+// Set up yargs arguments
+// ----------------------
 var argv = require("yargs")(process.argv.slice(2))
     .scriptName("libgencheck.js")
     .usage("Usage: $0 [OPTION]...  [FILE]...")
@@ -75,6 +78,8 @@ var argv = require("yargs")(process.argv.slice(2))
     .demandCommand(1)
     .argv;
 
+// Declare functions responsible for output
+// ----------------------------------------
 const VERBOSE_LEVEL = argv.v;
 
 function LOG() { VERBOSE_LEVEL >= 0 && console.log.apply(console, arguments); }
@@ -85,8 +90,12 @@ function DEBUG() { VERBOSE_LEVEL >= 2 && console.log.apply(console, arguments); 
 INFO(argv.n ? `Files chosen for processing: ${argv._}`: `Files chosen for processing: `.bold + `${argv._}`.italic );
 INFO("");
 
+// Iterate through each argument from the argv._ and check files from there
+// ------------------------------------------------------------------------
 argv._.forEach(async file => 
     {
+        // Declare variables before try-catch blocks since JS is illogical and try-catches are scoped
+        // ------------------------------------------------------------------------------------------
         let hash;
         try
         {
@@ -107,7 +116,9 @@ argv._.forEach(async file =>
                 search_in: 'md5'
             }
         DEBUG(options);
-
+        
+        // Grab file information from Library Genesis
+        // ------------------------------------------
         let data;
         try 
         {
@@ -119,6 +130,8 @@ argv._.forEach(async file =>
             DEBUG(err);
         }
 
+        // The if clause evaluates to true when the searched for file does not exist on Library Genesis
+        // --------------------------------------------------------------------------------------------
         if (data.length === undefined)
         {
             if (!argv.a)
