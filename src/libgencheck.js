@@ -23,6 +23,8 @@ const fs = require("fs");
 var argv = require("yargs")(process.argv.slice(2))
     .scriptName("libgencheck.js")
     .usage("Usage: $0 [OPTION]...  [FILE]...")
+    .example("$0 *.*", "check all files in the current folder")
+    .example("$0 *.pdf", "check all PDF files in the current folder")
     .option("a",
         {
             alias: "available-only",

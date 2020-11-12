@@ -27,6 +27,10 @@ Options:
                           'X'es
   -v, --verbose           Explain what is being done. Specify multiple times to
                           increase verbosity (up to 2 times)             [count]
+
+Examples:
+  libgencheck.js *.*    check all files in the current folder
+  libgencheck.js *.pdf  check all PDF files in the current folder
 ```
 
 
