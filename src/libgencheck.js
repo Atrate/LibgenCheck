@@ -92,9 +92,13 @@ function DEBUG() { VERBOSE_LEVEL >= 2 && console.log.apply(console, arguments); 
 INFO(argv.n ? `Files chosen for processing: ${argv._}`: `Files chosen for processing: `.bold + `${argv._}`.italic );
 INFO("");
 
-// Iterate through each argument from the argv._ and check files from there
-// ------------------------------------------------------------------------
-argv._.forEach(async file => 
+// Iterate through each argument from the argv._ and check files from there.
+// This will be made synchronous when:
+// a) The libgen module implements synchronous search
+// b) With the release of Webpack v5, which allows for await in sync functions.
+// See: https://stackoverflow.com/a/41957152
+// ----------------------------------------------------------------------------
+argv._.forEach(file => 
     {
         // Declare variables before try-catch blocks since JS is illogical and try-catches are scoped
         // ------------------------------------------------------------------------------------------
