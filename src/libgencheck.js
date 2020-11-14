@@ -95,9 +95,9 @@ INFO("");
 // Iterate through each argument from the argv._ and check files from there.
 // This will be made synchronous when:
 // a) The libgen module implements synchronous search
-// b) With the release of Webpack v5, which allows for await in sync functions.
+// b) Webpack v5 is released, which would allow using await in sync functions.
 // See: https://stackoverflow.com/a/41957152
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 argv._.forEach(file => 
     {
         // Declare variables before try-catch blocks since JS is illogical and try-catches are scoped
