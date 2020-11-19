@@ -98,7 +98,7 @@ INFO("");
 // b) Webpack v5 is released, which would allow using await in sync functions.
 // See: https://stackoverflow.com/a/41957152
 // ---------------------------------------------------------------------------
-argv._.forEach(file => 
+argv._.forEach(async file => 
     {
         // Declare variables before try-catch blocks since JS is illogical and try-catches are scoped
         // ------------------------------------------------------------------------------------------
