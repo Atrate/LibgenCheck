@@ -33,13 +33,6 @@ Examples:
   libgencheck.js *.pdf  check all PDF files in the current folder
 ```
 
-
-To check all the files in a folder you can utilize shell globbing:
-`libgencheck *`
-
-To check all the files with the PDF extension you can use this:
-`libgencheck *.pdf`
-
 ### [Changelog](./CHANGELOG)
 
 ## Contributing
