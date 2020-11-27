@@ -21,7 +21,7 @@ const fs = require('fs');
 // Set up yargs arguments
 // ----------------------
 var argv = require('yargs')(process.argv.slice(2))
-    .scriptName('libgencheck.js')
+    .scriptName('libgencheck')
     .usage('Usage: $0 [OPTION]...  [FILE]...')
     .example('$0 *.*', 'check all files in the current folder')
     .example('$0 *.pdf', 'check all PDF files in the current folder')

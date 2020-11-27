@@ -5,7 +5,7 @@ A simple Node.js script designed to check whether books in your collection exist
 
 ## Usage
 ```
-Usage: libgencheck.js [OPTION]...  [FILE]...
+Usage: libgencheck [OPTION]...  [FILE]...
 
 Options:
       --help              Show help                                    [boolean]
@@ -29,8 +29,8 @@ Options:
                           increase verbosity (up to 2 times)             [count]
 
 Examples:
-  libgencheck.js *.*    check all files in the current folder
-  libgencheck.js *.pdf  check all PDF files in the current folder
+  libgencheck *.*    check all files in the current folder
+  libgencheck *.pdf  check all PDF files in the current folder
 ```
 
 ### [Changelog](./CHANGELOG)
