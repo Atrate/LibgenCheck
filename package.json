@@ -3,6 +3,9 @@
   "version": "0.5.0",
   "description": "A Node.js script designed to check whether books in your collection exist on Library Genesis or not",
   "main": "src/libgencheck.js",
+  "scripts": {
+    "start": "node ./src/libgencheck.js"
+  },
   "keywords": [
     "libgen",
     "library",
@@ -14,10 +17,16 @@
     "type": "git",
     "url": "https://gitlab.com/Atrate/libgencheck"
   },
+  "bin": {
+    "libgencheck": "./bin/libgencheck"
+  },
   "dependencies": {
     "libgen": "2.1.x",
     "md5-file": "5.0.x",
     "yargs": "16.1.x",
     "colors": "1.4.x"
+  },
+  "devDependencies": {
+    "eslint": "^7.14.0"
   }
 }
