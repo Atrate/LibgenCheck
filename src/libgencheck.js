@@ -144,30 +144,45 @@ argv._.forEach(async file =>
         {
             LOG(argv.n ? `[X] ${file} does not exist on Library Genesis` : '[' + '✘'.red + '] ' + `${file}`.italic  + ' does not exist'.bold + ' on Library Genesis');
         }
-        if (typeof argv.C !== 'undefined')
+        try
         {
-            if (!fs.existsSync(argv.C))
+            if (typeof argv.C !== 'undefined')
+            {           
+                if (!fs.existsSync(argv.C))
+                {
+                    fs.mkdirSync(argv.C);
+                }
+                fs.copyFile(file, path.join(argv.C, path.basename(file)), (err) =>
+                {
+                    if (err) throw err;
+                    INFO(`Copied ${file} to ${argv.C}`);
+                });          
+            }       
+            if (typeof argv.M !== 'undefined')
             {
-                fs.mkdirSync(argv.C);
-            }
-            fs.copyFile(file, path.join(argv.C, path.basename(file)), (err) =>
-            {
-                if (err) throw err;
-                INFO(`Copied ${file} to ${argv.C}`);
-            });
+                if (!fs.existsSync(argv.M))
+                {
+                    fs.mkdirSync(argv.M);
+                }
+                fs.rename(file, path.join(argv.M, path.basename(file)), (err) =>
+                {
+                    if (err) throw err;
+                    INFO(`Moved ${file} to ${argv.M}`);
+                });
+            }                    
         }
-        if (typeof argv.M !== 'undefined')
+        catch(err)
         {
-            if (!fs.existsSync(argv.M))
+            if (typeof argv.C !== 'undefined')
             {
-                fs.mkdirSync(argv.M);
+                WARN(`Copying ${file} to ${argv.C} has failed! For more info, pass -vv`);
             }
-            fs.rename(file, path.join(argv.M, path.basename(file)), (err) =>
+            if (typeof argv.M !== 'undefined')
             {
-                if (err) throw err;
-                INFO(`Moved ${file} to ${argv.M}`);
-            });
-        }                    
+                WARN(`Moving ${file} to ${argv.M} has failed! For more info, pass -vv`);
+            }        
+            DEBUG(err);
+        }
     }
     else
     {    
@@ -176,29 +191,44 @@ argv._.forEach(async file =>
             LOG(argv.n ? `[O] ${file} exists on Library Genesis`: '[' + '✔'.green + '] ' +  `${file}`.italic + ' exists'.bold + ' on Library Genesis');
         }
         DEBUG(data);
-        if (typeof argv.c !== 'undefined')
+        try
         {
-            if (!fs.existsSync(argv.c))
+            if (typeof argv.c !== 'undefined')
             {
-                fs.mkdirSync(argv.c);
+                if (!fs.existsSync(argv.c))
+                {
+                    fs.mkdirSync(argv.c);
+                }
+                fs.copyFile(file, path.join(argv.c, path.basename(file)), (err) =>
+                {
+                    if (err) throw err;
+                    INFO(`Copied ${file} to ${argv.c}`);
+                });
             }
-            fs.copyFile(file, path.join(argv.c, path.basename(file)), (err) =>
+            if (typeof argv.m !== 'undefined')
             {
-                if (err) throw err;
-                INFO(`Copied ${file} to ${argv.c}`);
-            });
+                if (!fs.existsSync(argv.m))
+                {
+                    fs.mkdirSync(argv.m);
+                }
+                fs.rename(file, path.join(argv.m, path.basename(file)), (err) =>
+                {
+                    if (err) throw err;
+                    INFO(`Moved ${file} to ${argv.m}`);
+                });
+            }
         }
-        if (typeof argv.m !== 'undefined')
+        catch(err)
         {
-            if (!fs.existsSync(argv.m))
+            if (typeof argv.c !== 'undefined')
             {
-                fs.mkdirSync(argv.m);
+                WARN(`Copying ${file} to ${argv.c} has failed! For more info, pass -vv`);
             }
-            fs.rename(file, path.join(argv.m, path.basename(file)), (err) =>
+            if (typeof argv.m !== 'undefined')
             {
-                if (err) throw err;
-                INFO(`Moved ${file} to ${argv.m}`);
-            });
+                WARN(`Moving ${file} to ${argv.m} has failed! For more info, pass -vv`);
+            }          
+            DEBUG(err);
         }
     }
 });
