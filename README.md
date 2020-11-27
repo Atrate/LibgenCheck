@@ -33,6 +33,17 @@ Examples:
   libgencheck *.pdf  check all PDF files in the current folder
 ```
 
+## Installation
+Use
+```
+npm install libgencheck
+```
+or
+```
+sudo npm install -g libgencheck
+```
+to install globally.
+
 ### [Changelog](./CHANGELOG)
 
 ## Contributing
