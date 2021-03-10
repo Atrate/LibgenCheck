@@ -1,6 +1,6 @@
 {
   "name": "libgencheck",
-  "version": "0.5.2",
+  "version": "0.5.1",
   "description": "A Node.js script designed to check whether books in your collection exist on Library Genesis or not",
   "main": "src/libgencheck.js",
   "scripts": {
